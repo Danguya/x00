@@ -1,13 +1,14 @@
 # ============================================================
-# WinDFIR Audit — versão "colar direto" (sem ficheiro .ps1)
+# WinDFIR Audit — saída na pasta atual do PowerShell ($PWD)
 # Abrir PowerShell COMO ADMINISTRADOR e colar este bloco.
 # ============================================================
 
-# --- CONFIGURAÇÃO (editar antes de colar, se necessário) ---
-$OutputDir  = "WinDFIR_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
-$MaxEvents  = 50000
-$HoursBack  = 24
-# -----------------------------------------------------------
+# --- CONFIGURAÇÃO ---
+$BaseDir   = $PWD.Path
+$OutputDir = Join-Path $BaseDir "WinDFIR_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+$MaxEvents = 50000
+$HoursBack = 24
+# --------------------
 
 # Verificação de Administrador
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -22,7 +23,8 @@ New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 $StartTime = Get-Date
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host "  WinDFIR Audit — Início: $($StartTime.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Cyan
-Write-Host "  Output: $OutputDir" -ForegroundColor Cyan
+Write-Host "  Base (PWD): $BaseDir" -ForegroundColor Cyan
+Write-Host "  Output:     $OutputDir" -ForegroundColor Cyan
 Write-Host "  Janela: últimas $HoursBack horas | MaxEvents: $MaxEvents" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
